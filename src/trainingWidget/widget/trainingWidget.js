@@ -1,26 +1,19 @@
 define([
     "dojo/_base/declare", "mxui/widget/_WidgetBase", "dijit/_TemplatedMixin",
-    "mxui/dom",
     "dojo/dom-style",
-    "dojo/dom-construct",
     "dojo/_base/lang",
     "dojo/html",
 
     // "trainingWidget/lib/jquery-1.11.2",
     "dojo/text!trainingWidget/widget/template/trainingWidget.html"
-], function (declare, _WidgetBase, _TemplatedMixin, dojoStyle, lang, dojoHtml,/* _jQuery, */widgetTemplate) {
+], function (declare, _WidgetBase, _TemplatedMixin, dojoStyle, lang, dojoHtml, /*_jQuery,*/ widgetTemplate) {
     "use strict";
-    //  var $ = _jQuery.noConflict(true);
-    // Declare widget's prototype.
+    // var $ = _jQuery.noConflict(true);
     return declare("trainingWidget.widget.trainingWidget", [_WidgetBase, _TemplatedMixin], {
         // _TemplatedMixin will create our dom node using this HTML template.
         templateString: widgetTemplate,
-
         // DOM elements
-        inputNodes: null,
-        colorSelectNode: null,
-        colorInputNode: null,
-        infoTextNode: null,
+        canvas: null,
         // Parameters configured in the Modeler.
         mfToExecute: "",
         messageString: "",
@@ -59,19 +52,6 @@ define([
 
         // Attach events to HTML dom elements
         _setupEvents: function () {
-            this.connect(this.colorSelectNode, "change", function (e) {
-                // Function from mendix object to set an attribute.
-                this._contextObj.set(this.backgroundColor, this.colorSelectNode.value);
-            });
-
-            this.connect(this.infoTextNode, "click", function (e) {
-                // Only on mobile stop event bubbling!
-
-                // If a microflow has been set execute the microflow on a click.
-                if (this.mfToExecute !== "") {
-                    this._execMf(this.mfToExecute, this._contextObj.getGuid());
-                }
-            });
         },
 
         _execMf: function (mf, guid, cb) {
@@ -95,21 +75,9 @@ define([
 
         // Rerender the interface.
         _updateRendering: function (callback) {
-
             if (this._contextObj !== null) {
-                dojoStyle.set(this.domNode, "display", "block");
-
-                var colorValue = this._contextObj.get(this.backgroundColor);
-
-                this.colorInputNode.value = colorValue;
-                this.colorSelectNode.value = colorValue;
-
-                dojoHtml.set(this.infoTextNode, this.messageString);
-                dojoStyle.set(this.infoTextNode, "background-color", colorValue);
             } else {
-                dojoStyle.set(this.domNode, "display", "none");
             }
-
             // The callback, coming from update, needs to be executed, to let the page know it finished rendering
             this._executeCallback(callback, "_updateRendering");
         },
@@ -121,21 +89,6 @@ define([
 
             // When a mendix object exists create subscribtions.
             if (this._contextObj) {
-                this.subscribe({
-                    guid: this._contextObj.getGuid(),
-                    callback: lang.hitch(this, function (guid) {
-                        this._updateRendering();
-                    })
-                });
-
-                this.subscribe({
-                    guid: this._contextObj.getGuid(),
-                    attr: this.backgroundColor,
-                    callback: lang.hitch(this, function (guid, attr, attrValue) {
-                        this._updateRendering();
-                    })
-                });
-
             }
         },
 
