@@ -1,12 +1,10 @@
 define([
     "dojo/_base/declare", "mxui/widget/_WidgetBase", "dijit/_TemplatedMixin",
-    "dojo/dom-style",
     "dojo/_base/lang",
-    "dojo/html",
-
+    "./utils",
     // "trainingWidget/lib/jquery-1.11.2",
     "dojo/text!trainingWidget/widget/template/trainingWidget.html"
-], function (declare, _WidgetBase, _TemplatedMixin, dojoStyle, lang, dojoHtml, /*_jQuery,*/ widgetTemplate) {
+], function (declare, _WidgetBase, _TemplatedMixin, lang, utils, /*_jQuery,*/ widgetTemplate) {
     "use strict";
     // var $ = _jQuery.noConflict(true);
     return declare("trainingWidget.widget.trainingWidget", [_WidgetBase, _TemplatedMixin], {
@@ -15,9 +13,7 @@ define([
         // DOM elements
         canvas: null,
         // Parameters configured in the Modeler.
-        mfToExecute: "",
         messageString: "",
-        backgroundColor: "",
         // Internal variables. Non-primitives created in the prototype are shared between all widget instances.
         _handles: null,
         _contextObj: null,
@@ -38,7 +34,6 @@ define([
         update: function (obj, callback) {
 
             this._contextObj = obj;
-            this._resetSubscriptions();
             this._updateRendering(callback); // We're passing the callback to updateRendering to be called after DOM-manipulation
         },
 
@@ -54,25 +49,6 @@ define([
         _setupEvents: function () {
         },
 
-        _execMf: function (mf, guid, cb) {
-            if (mf && guid) {
-                mx.ui.action(mf, {
-                    params: {
-                        applyto: "selection",
-                        guids: [guid]
-                    },
-                    callback: lang.hitch(this, function (objs) {
-                        if (cb && typeof cb === "function") {
-                            cb(objs);
-                        }
-                    }),
-                    error: function (error) {
-                        console.debug(error.description);
-                    }
-                }, this);
-            }
-        },
-
         // Rerender the interface.
         _updateRendering: function (callback) {
             if (this._contextObj !== null) {
@@ -81,17 +57,6 @@ define([
             // The callback, coming from update, needs to be executed, to let the page know it finished rendering
             this._executeCallback(callback, "_updateRendering");
         },
-
-        // Reset subscriptions.
-        _resetSubscriptions: function () {
-            // Release handles on previous object, if any.
-            this.unsubscribeAll();
-
-            // When a mendix object exists create subscribtions.
-            if (this._contextObj) {
-            }
-        },
-
         _executeCallback: function (cb, from) {
             if (cb && typeof cb === "function") {
                 cb();
