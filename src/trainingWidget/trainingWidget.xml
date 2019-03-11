@@ -5,10 +5,81 @@
     <description>Training widget.</description>
     <icon />
     <properties>
-        <property key="messageString" type="string" required="true" defaultValue="">
-            <caption>Message</caption>
-            <category>Appearance</category>
-            <description>The message visible within the widget.</description>
+        <property key="shapeEntity" type="entity" required="true">
+            <caption>Shape</caption>
+            <category>Shape</category>
+            <description>Shape.</description>
+        </property>
+        <property key="shapeToFlow" type="entity" required="true" isPath="yes" pathType="reference" entityProperty="shapeEntity">
+            <caption>Reference to flow</caption>
+            <category>Shape</category>
+            <description>Shape.</description>
+        </property>
+        <property key="xCoord" type="attribute" required="true" entityProperty="shapeEntity">
+            <caption>XCoord</caption>
+            <category>Shape</category>
+            <description>XCoord.</description>
+            <attributeTypes>
+                <attributeType name="Integer"/>
+            </attributeTypes>
+        </property>
+        <property key="yCoord" type="attribute" required="true" entityProperty="shapeEntity">
+            <caption>YCoord</caption>
+            <category>Shape</category>
+            <description>YCoord.</description>
+            <attributeTypes>
+                <attributeType name="Integer"/>
+            </attributeTypes>
+        </property>
+        <property key="color" type="attribute" required="true" entityProperty="shapeEntity">
+            <caption>Color</caption>
+            <category>Shape</category>
+            <description>YCoord.</description>
+            <attributeTypes>
+                <attributeType name="String"/>
+            </attributeTypes>
+        </property>
+        <property key="circleEntity" type="entity" required="true">
+            <caption>Circle</caption>
+            <category>Circle</category>
+            <description>Shape.</description>
+        </property>
+        <property key="radius" type="attribute" required="true" entityProperty="circleEntity">
+            <caption>Radius</caption>
+            <category>Circle</category>
+            <description>XCoord.</description>
+            <attributeTypes>
+                <attributeType name="Integer"/>
+            </attributeTypes>
+        </property>
+        <property key="rectangleEntity" type="entity" required="true">
+            <caption>Rectangle</caption>
+            <category>Rectangle</category>
+            <description>Shape.</description>
+        </property>
+        <property key="borderRadius" type="attribute" required="true" entityProperty="rectangleEntity">
+            <caption>Border Radius</caption>
+            <category>Rectangle</category>
+            <description>Rectangle Radius.</description>
+            <attributeTypes>
+                <attributeType name="Integer"/>
+            </attributeTypes>
+        </property>
+        <property key="width" type="attribute" required="true" entityProperty="rectangleEntity">
+            <caption>Width</caption>
+            <category>Rectangle</category>
+            <description>Width.</description>
+            <attributeTypes>
+                <attributeType name="Integer"/>
+            </attributeTypes>
+        </property>
+        <property key="height" type="attribute" required="true" entityProperty="rectangleEntity">
+            <caption>Height</caption>
+            <category>Rectangle</category>
+            <description>Height.</description>
+            <attributeTypes>
+                <attributeType name="Integer"/>
+            </attributeTypes>
         </property>
     </properties>
 </widget>
